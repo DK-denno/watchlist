@@ -1,0 +1,3 @@
+{
+    "python.pythonPath": "${workspaceFolder}/watchlist/bin/python"
+}
