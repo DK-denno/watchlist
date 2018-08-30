@@ -4,18 +4,18 @@ from flask import request
 from flask import url_for
 from .forms import ReviewForm
 # from app folder import the new instace of Flask stored under app 'variable'
-from app import app
 # Views
-from .request import get_movies
+from ..request import get_movies
 # importing the get_movies() function
-from .models import review
+from ..models import Review
+from . import main
 
-from .request import get_movie
-from .request import search_movie
-Review = review.Review
+from ..request import get_movie
+from ..request import search_movie
 
 
-@app.route('/')
+
+@main.route('/')
 def index():
     '''
     a function that returns the whole of the page index.html
@@ -27,7 +27,7 @@ def index():
     search_movie = request.args.get('movie_query')
     print(search_movie)
     if search_movie:
-        return redirect(url_for('search', movie_name=search_movie))
+        return redirect(url_for('.search', movie_name=search_movie))
     else:
 
         return render_template('index.html',
@@ -38,21 +38,21 @@ def index():
                                )
 
 
-@app.route('/movie/<int:movie_id>')
-def movie(movie_id):
+@main.route('/movie/<int:id>')
+def movie(id):
 
     movie = get_movie(id)
     title = f'{movie.title}'
     reviews = Review.get_reviews(movie.id)
-    return render_template('movie.html', title=title, revies=reviews, movie=movie)
+    return render_template('movie.html', title=title, reviews=reviews, movie=movie)
 
 
-@app.route('/dennis')
+@main.route('/dennis')
 def dennis():
     return render_template('dennis.html')
 
 
-@app.route('/search/<movie_name>')
+@main.route('/search/<movie_name>')
 def search(movie_name):
     movie_name_list = movie_name.split(" ")
     movie_name_format = "+".join(movie_name_list)
@@ -61,7 +61,7 @@ def search(movie_name):
     return render_template('search.html', movies=searched_movies, title=title)
 
 
-@app.route('/movie/review/new/<int:id>', methods=['GET', 'POST'])
+@main.route('/movie/review/new/<int:id>', methods=['GET','POST'])
 def new_review(id):
     form = ReviewForm()
     movie = get_movie(id)
@@ -71,11 +71,8 @@ def new_review(id):
         review = form.review.data
         new_review = Review(movie.id, title, movie.poster, review)
         new_review.save_review()
-        return redirect(url_for('movie', id=movie.id))
+        return redirect(url_for('.movie', id=movie.id))
 
     title = f'{movie.title} review'
     return render_template('new_review.html', title=title, review_form=form, movie=movie)
 
-
-if __name__ == '__main__':
-    app.run()

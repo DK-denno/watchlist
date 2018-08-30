@@ -1,12 +1,13 @@
 class Review:
+
+    all_reviews = []
+
     def __init__(self, movie_id, title, imageurl, review):
         self.movie_id = movie_id
-        self.id = id
+        # self.id = id
         self.title = title
         self.imageurl = imageurl
         self.review = review
-
-    all_reviews = []
 
     def save_review(self):
         Review.all_reviews.append(self)
@@ -25,4 +26,3 @@ class Review:
                 response.append(review)
 
         return response
-        
