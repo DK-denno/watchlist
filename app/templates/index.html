@@ -1,1 +1,42 @@
-<h1>{{greetings}}</h1>
+{% import 'macro.html' as macro%} {% extends 'base.html' %}
+<!Doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8"> {%if title%}
+    <title>{{title}}</title>
+    {%else%}
+    <title>welcome to my house</title>
+    {%endif%}
+</head>
+
+<body>
+    {% block content %}
+    <div class="container">
+        <form>
+            <input type="text" name="movie_query" placeholder="Search for a Movie">
+            <input type="submit" value="Search" class="btn btn-default">
+        </form>
+    </div>
+
+    {% block styles %} {{ super()}}
+    <link rel='stylesheet' href=' {{url_for("static",filename="css/index.css" )}}'> {% endblock %}
+    <!-- Popular movie -->
+    <h3> Popular Movies</h3>
+    <ul>
+        {{ macro.displayMovieList(popular)}}
+        <br>
+        <br>
+    </ul>
+
+    <!-- Upcoming movie -->
+    <h3> Upcoming Movies </h3>
+    <ul>
+        {{ macro.displayMovieList(upcoming)}}
+        <br>
+        <br>
+    </ul>
+    {%endblock %}
+</body>
+
+</html>

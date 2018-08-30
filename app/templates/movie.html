@@ -1,1 +1,39 @@
-<h1>hello movie {{id}}</h1>
+{% extends 'base.html'%}
+{% import 'macro.html' as macro %}
+<!-- Content block -->
+{% block content %}
+<div class="container">
+
+    <!-- Poster background -->
+    <div class="row" style="background-color:burlywood">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 posterPath" style="background: url({{movie.poster}}) no-repeat center center; padding: 280px;">
+        </div>
+
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 movie-details">
+            <h3>{{ movie.title }}</h3>
+
+            <p class="overview"> {{ movie.overview }}</p>
+            <p class="ratings"> <b> {{ movie.vote_average }}</b> - <i>{{ movie.vote_count}} votes </i>
+            </p>
+            <a class="ratings" href="/movie/review/new/{{movie.id}}"> <button class="btn btn-primary">click to add review</button></a>
+
+
+        </div>
+    </div>
+    <div class="row">
+
+            <h1>Reviews</h1>
+            <hr>
+    
+            {% if reviews %}
+                {{macro.displayReviews(reviews)}}
+    
+            {% else%}
+                <h3 class="text-center">This movie has no reviews </h3>
+    
+            {% endif %}
+    
+        </div>
+
+</div>
+{% endblock %}
